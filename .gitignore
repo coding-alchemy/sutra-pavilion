@@ -1,0 +1,41 @@
+# ===== 系统与编辑器 =====
+.DS_Store
+.idea/
+.vscode/
+
+# ===== Obsidian：只提交共享配置，忽略个人工作区、缓存和设备状态 =====
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache
+.obsidian/cache.json
+.trash/
+
+# ===== 可重建生成物：搜索索引、RAG 分块、参考文献、图谱导出 =====
+.generated/
+
+# ===== 临时 AI/OCR 提取结果（见设计文档 6.3）=====
+inbox/extracted/
+
+# ===== 大型媒体：统一放入 .local/，本地保留、不进 Git（见设计文档 10）=====
+.local/
+
+# ===== Python 工具链 =====
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# ===== 本地环境变量 =====
+.env
+.env.*
+!.env.example
