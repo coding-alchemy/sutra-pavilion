@@ -1,117 +1,92 @@
 # 藏经阁
 
-藏经阁是一个以 Git 和 Markdown 为基础、面向人工维护与 AI 协作的结构化知识库项目。它用于组织多个知识领域和主题知识库，在保留 Obsidian 阅读与编辑体验的同时，为内容审核、来源追溯、全文检索、RAG 和知识图谱演进提供统一基础。
+藏经阁是一个以 Git 和 Markdown 为基础、面向人工维护与 AI 协作的结构化知识库项目。当前版本提供内容目录、机器契约、Obsidian 内容 Vault 和统一校验 CLI，用于可靠地编写并检查知识对象与来源对象。
 
-项目面向单人维护、AI 辅助扩展的使用方式，目标规模为几十个知识库和数千篇知识条目。AI 可以帮助获取信息、整理材料、编写草稿和提出审核建议，但只有经过人工审核的内容才能成为正式知识。
+## 当前能力
 
-## 核心模型
+- 以“知识域 → 知识库 → 知识条目”组织知识内容；
+- 独立维护来源族、来源记录和来源笔记；
+- 使用 JSON Schema 校验六类对象的 Front Matter；
+- 使用受控注册表校验条目类型、关系类型、来源类型和标签；
+- 校验 ULID 唯一性、关系目标、来源内部引用和正文结构化引用；
+- 在本地与 GitHub Actions 中使用同一个 `sutra validate` 入口。
 
-知识内容采用三层结构：
+知识条目通过结构化引用连接具体来源记录。来源材料和来源笔记不会自动成为正式知识。
 
-```text
-知识域 → 知识库 → 知识条目
-```
+## 项目布局
 
-- **知识域**：具有独立研究方法和核心术语的稳定一级分类，例如文学、历史、经济学和哲学。
-- **知识库**：隶属于一个知识域、围绕明确主题组织的内容集合，例如中国神话、文学史和宏观经济学。
-- **知识条目**：可以独立阅读、引用、审核和检索的最小正式内容，例如人物、作品、事件和概念。
-
-项目同时维护两个彼此独立的领域上下文：
-
-- **知识上下文**负责知识组织、条目元数据、关系、审核和发布。
-- **来源上下文**负责来源版本、来源族、研究笔记、质量评价、版权和可用状态。
-
-知识条目通过结构化引用连接具体来源版本。来源材料和来源笔记不会自动成为正式知识。
-
-## 内容工作流
+项目根目录承载工程文件和机器契约，项目内同名目录 `sutra-pavilion/` 是 Obsidian 内容 Vault（ADR-0003）：
 
 ```text
-外部材料
-   ↓
-导入暂存区（inbox）
-   ↓
-来源记录与来源笔记
-   ↓
-条目草稿 → 待审核 → 已发布 → 已归档
-               ↑
-             人工决策
+sutra-pavilion/              # Git / Python 项目根目录
+├── contracts/               # Schema 与受控注册表
+├── docs/                    # 当前设计、Agent 导航和 ADR
+├── specs/                   # 规格与执行计划
+├── src/sutra_pavilion/      # CLI 与校验实现
+├── sutra-pavilion/          # Obsidian 打开的内容 Vault
+│   ├── .obsidian/
+│   ├── CONTEXT-MAP.md
+│   ├── knowledge/
+│   ├── sources/
+│   ├── inbox/
+│   └── templates/
+└── tests/                   # 公开 CLI 行为测试
 ```
 
-主要规则：
+六类权威对象位于：
 
-- 人工编写和外部批量导入并重，AI 作为重要辅助。
-- 关键事实或段落必须引用具体来源及页码、章节或网页位置。
-- AI 可以创建草稿、整理 Meta 和提出建议，但不能发布知识。
-- 已发布条目的事实、结论、关系、来源或语义 Meta 变化后需要重新审核。
-- 发生来源冲突时保留不同观点，并说明采用某一结论的依据和不确定性。
+- `sutra-pavilion/knowledge/domains/<domain>/_domain.md`
+- `sutra-pavilion/knowledge/domains/<domain>/libraries/<library>/_library.md`
+- `sutra-pavilion/knowledge/domains/<domain>/libraries/<library>/entries/<slug>.md`
+- `sutra-pavilion/sources/catalog/families/<ULID>.md`
+- `sutra-pavilion/sources/catalog/records/<ULID>.md`
+- `sutra-pavilion/sources/notes/<来源记录 ULID>/<笔记 ULID>.md`
 
-## 设计原则
-
-- **Markdown 为内容事实源**：知识对象使用 Markdown 和扁平 YAML Front Matter，便于人工阅读、Obsidian 编辑和机器校验。
-- **稳定身份与可变路径分离**：所有知识对象和来源对象使用 ULID；标题、slug 和文件位置可以变化。
-- **目录管理唯一归属**：目录决定知识对象的主要归属，跨领域联系通过类型化关系表达。
-- **图谱渐进增强**：构建流程可以导出节点和边；在实际规模或复杂查询证明有必要前，不引入图数据库。
-- **来源集中维护**：来源库独立于各知识库，同一来源版本只维护一次。
-- **生成物可重建**：搜索索引、RAG 分块、参考文献和图谱导出不作为内容事实源，也不提交 Git。
+完整目录、对象格式和校验边界见[项目结构设计](./docs/design/project-structure.md)。
 
 ## Obsidian 集成
 
-仓库根目录同时作为 Obsidian Vault：
+在 Obsidian 中选择“打开文件夹作为仓库”，打开项目内的 `sutra-pavilion/`。工程文件、`contracts/`、`docs/`、`specs/` 和测试不会出现在 Obsidian 文件树中。
 
-```text
-sutra-pavilion/              ← Obsidian Vault
-├── .obsidian/
-├── knowledge/
-├── sources/
-├── inbox/
-├── docs/
-├── src/                     # 从 Obsidian 搜索与图谱中排除
-├── tests/                   # 从 Obsidian 搜索与图谱中排除
-└── .generated/              # 从 Obsidian 搜索与图谱中排除
+团队只共享 `sutra-pavilion/.obsidian/app.json`。个人 workspace、外观、快捷键、图谱配置、缓存和社区插件目录均由 `.gitignore` 排除。项目根目录不是内容 Vault，其本地 `.obsidian/` 状态也不进入 Git。
+
+Obsidian Wiki Link 用于人工导航；ULID、类型化关系和结构化引用用于机器校验。核心元数据使用顶层 YAML Properties，以便 Obsidian 原生读取和编辑。
+
+已知限制：本地图谱过滤按笔记保存，无法通过共享核心设置统一表达。
+
+## 快速开始
+
+需要 Python 3.12+：
+
+```bash
+python3.12 -m venv .venv
+source .venv/bin/activate
+pip install -e ".[dev]"
+
+sutra validate .
+ruff check src tests
+python -m pytest
 ```
 
-Obsidian Wiki Link 用于人工浏览和导航；ULID 与结构化关系才是机器校验和正式知识图谱的依据。核心 Meta 使用顶层 Properties，以便 Obsidian 原生读取和编辑。
+`pip install -e .`（不带 `[dev]`）只安装运行依赖。
 
-## 检索与 AI 使用
+### CLI 约定
 
-检索采用 Meta 优先的两阶段流程：
-
-1. 优先扫描标题、别名、摘要、类型、标签和关系，筛选并排序候选条目；
-2. 读取候选条目的正文分块和引用，形成有证据支撑的结果。
-
-系统区分两种检索语境：
-
-- **正式知识检索**只使用经过审核的已发布条目。
-- **研究检索**可以使用来源和来源笔记，但必须明确提示内容尚未成为正式知识。
-
-## 规划目录
-
-```text
-knowledge/                  # 知识域、知识库、条目、Schema 和注册表
-sources/                    # 来源族、来源版本、来源笔记和来源 Schema
-inbox/                      # 导入材料及临时 AI/OCR 处理结果
-templates/                  # Obsidian 与 CLI 共用内容模板
-config/                     # 构建和检索配置
-src/sutra_pavilion/         # Python CLI、校验、构建与检索模块
-tests/                      # 单元测试、集成测试和示例数据
-docs/                       # 设计文档、政策和架构决策记录
-.generated/                 # 可重建的索引、RAG 和图谱产物
-```
-
-完整目录和文件格式见[项目结构设计](./docs/design/project-structure.md)。
+- `sutra validate [PATH]`：校验一个藏经阁项目；`PATH` 省略时使用当前目录。
+- 参数必须是项目根目录；直接传入内容 Vault 会返回 `PATH_IS_CONTENT_VAULT`。
+- 退出码：`0` 校验通过；`1` 发现内容或仓库契约错误；`2` 命令用法错误。
+- 每个错误输出 `项目相对路径: 规则标识: 可操作原因`，最后输出对象数和错误总数。
 
 ## 当前状态
 
-项目目前处于架构与领域建模阶段，已经完成通用项目结构、来源信任边界、审核生命周期、检索模型和 Obsidian 集成设计。Python 工具链、Schema、CLI、Obsidian 配置及示例知识库尚未开始实现。
-
-第一阶段将以“文学 → 中国神话”作为示例，验证人物、事件、作品、来源版本、引用、关系和媒体资源的完整工作流。具体内容结构以后续中国神话知识库需求文档为准。
+本地初始化已完成：CLI、Schema、注册表、六类模板、内容 Vault、测试与 CI 工作流均已落地；Obsidian 人工验收已确认通过。远端 CI 会在提交推送后按 `.github/workflows/ci.yml` 运行 Ruff、pytest 和真实仓库校验。
 
 ## 文档导航
 
-- [领域上下文地图](./CONTEXT-MAP.md)
-- [知识上下文术语表](./knowledge/CONTEXT.md)
-- [来源上下文术语表](./sources/CONTEXT.md)
-- [完整项目结构设计](./docs/design/project-structure.md)
-- [ADR-0001：以目录管理唯一归属并渐进构建知识图谱](./docs/adr/0001-directory-owned-knowledge-with-derived-graph.md)
+- [领域上下文地图](./sutra-pavilion/CONTEXT-MAP.md)
+- [知识上下文术语表](./sutra-pavilion/knowledge/CONTEXT.md)
+- [来源上下文术语表](./sutra-pavilion/sources/CONTEXT.md)
+- [项目结构设计](./docs/design/project-structure.md)
+- [ADR-0001：以目录管理唯一归属与类型化关系](./docs/adr/0001-directory-owned-knowledge.md)
 - [ADR-0002：将来源库设为独立上下文和信任边界](./docs/adr/0002-separate-source-context-and-trust-boundary.md)
-- [ADR-0003：以仓库根目录作为 Obsidian Vault](./docs/adr/0003-repository-root-as-obsidian-vault.md)
+- [ADR-0003：内容 Vault 命名为项目名称](./docs/adr/0003-content-vault-named-after-project.md)

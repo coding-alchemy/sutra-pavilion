@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "来源族",
+  "description": "将同一作品的多个来源记录归组的可选身份；来源族本身不可被引用。",
+  "type": "object",
+  "properties": {
+    "schema_version": { "const": 1 },
+    "id": { "$ref": "#/$defs/ulid" },
+    "title": { "type": "string", "minLength": 1 },
+    "language": { "$ref": "#/$defs/language" },
+    "summary": { "type": "string" },
+    "aliases": { "$ref": "#/$defs/stringList" }
+  },
+  "required": ["schema_version", "id", "title", "language"],
+  "additionalProperties": false,
+  "$defs": {
+    "ulid": { "type": "string", "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$" },
+    "language": { "type": "string", "pattern": "^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$" },
+    "stringList": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    }
+  }
+}

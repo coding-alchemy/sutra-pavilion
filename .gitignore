@@ -3,20 +3,22 @@
 .idea/
 .vscode/
 
-# ===== Obsidian：只提交共享配置，忽略个人工作区、缓存和设备状态 =====
-.obsidian/workspace.json
-.obsidian/workspace-mobile.json
-.obsidian/cache
-.obsidian/cache.json
-.trash/
+# ===== Obsidian：仅共享内容 Vault 核心设置 app.json，其余个人/设备状态全部忽略 =====
+# 项目根目录不是内容 Vault，其本地编辑器状态不进入 Git
+/.obsidian/
+/.trash/
+sutra-pavilion/.obsidian/*
+!sutra-pavilion/.obsidian/app.json
+sutra-pavilion/.trash/
 
-# ===== 可重建生成物：搜索索引、RAG 分块、参考文献、图谱导出 =====
+# ===== 本地生成物 =====
 .generated/
 
-# ===== 临时 AI/OCR 提取结果（见设计文档 6.3）=====
-inbox/extracted/
+# ===== 收件箱临时材料 =====
+sutra-pavilion/inbox/extracted/
+sutra-pavilion/inbox/raw/
 
-# ===== 大型媒体：统一放入 .local/，本地保留、不进 Git（见设计文档 10）=====
+# ===== 本地大型媒体 =====
 .local/
 
 # ===== Python 工具链 =====

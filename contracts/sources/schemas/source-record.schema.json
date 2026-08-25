@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "来源记录",
+  "description": "一个可被准确引用的具体版次、版本或网页快照的唯一记录。",
+  "type": "object",
+  "properties": {
+    "schema_version": { "const": 1 },
+    "id": { "$ref": "#/$defs/ulid" },
+    "title": { "type": "string", "minLength": 1 },
+    "source_type": { "type": "string", "minLength": 1 },
+    "language": { "$ref": "#/$defs/language" },
+    "status": { "enum": ["available", "inaccessible", "withdrawn", "superseded"] },
+    "authors": { "$ref": "#/$defs/stringList" },
+    "edition": { "type": "string" },
+    "publisher": { "type": "string" },
+    "published_date": { "$ref": "#/$defs/date" },
+    "external_ids": {
+      "type": "object",
+      "additionalProperties": { "type": "string", "minLength": 1 }
+    },
+    "family_id": { "$ref": "#/$defs/ulid" },
+    "rights": {
+      "type": "object",
+      "properties": {
+        "copyright": { "type": "string" },
+        "license": { "type": "string" },
+        "permitted_uses": { "$ref": "#/$defs/stringList" }
+      },
+      "additionalProperties": false
+    },
+    "acquisition": {
+      "type": "object",
+      "properties": {
+        "acquired_date": { "$ref": "#/$defs/date" },
+        "file_location": { "type": "string" },
+        "checksum": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "traceability": { "$ref": "#/$defs/rating" },
+    "rigor": { "$ref": "#/$defs/rating" }
+  },
+  "required": ["schema_version", "id", "title", "source_type", "language", "status"],
+  "additionalProperties": false,
+  "$defs": {
+    "ulid": { "type": "string", "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$" },
+    "language": { "type": "string", "pattern": "^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$" },
+    "date": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$" },
+    "stringList": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "rating": {
+      "type": "object",
+      "properties": {
+        "score": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "reason": { "type": "string", "minLength": 1 },
+        "rated_by": { "type": "string", "minLength": 1 },
+        "rated_at": { "$ref": "#/$defs/date" }
+      },
+      "required": ["score", "reason", "rated_by", "rated_at"],
+      "additionalProperties": false
+    }
+  }
+}
