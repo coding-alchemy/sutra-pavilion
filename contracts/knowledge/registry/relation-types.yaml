@@ -1,0 +1,13 @@
+# 知识关系类型受控注册表。新增类型须经审核（见知识上下文术语表「关系类型」）。
+# 每个类型登记名称与适用对象，共同表达关系定义的方向：
+#   name         类型名称
+#   source_kinds 允许声明该关系的知识对象类型
+#   target_kinds 允许作为关系目标的知识对象类型
+# 取值：domain | library | entry；不适用的对象组合会被 RELATION_NOT_APPLICABLE 拒绝。
+relation_types:
+  - name: recorded_in
+    source_kinds: [domain, library, entry]
+    target_kinds: [domain, library, entry]
+  - name: influenced
+    source_kinds: [domain, library, entry]
+    target_kinds: [domain, library, entry]

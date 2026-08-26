@@ -1,0 +1,9 @@
+# 知识条目类型受控注册表。新增类型须经审核（见知识上下文术语表「条目类型」）。
+entry_types:
+  - concept
+  - figure
+  - work
+  - event
+  - place
+  - organization
+  - overview

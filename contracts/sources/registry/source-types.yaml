@@ -1,0 +1,5 @@
+# 来源类型受控注册表。新增类型须经审核（见路线图 5.2 节批准的最小通用集合）。
+source_types:
+  - book
+  - journal_article
+  - web_page
