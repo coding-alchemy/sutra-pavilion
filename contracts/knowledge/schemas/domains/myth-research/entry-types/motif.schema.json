@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "母题条目契约",
+  "description": "motif 类型叠加契约：跨文化比较的受控分析概念。",
+  "type": "object",
+  "properties": {
+    "attributes": {
+      "type": "object",
+      "properties": {
+        "subtypes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        },
+        "catalog_alignments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "index_name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "version": {
+                "type": "string",
+                "minLength": 1
+              },
+              "identifier": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "index_name",
+              "version",
+              "identifier"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "subtypes",
+        "catalog_alignments"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "attributes"
+  ]
+}

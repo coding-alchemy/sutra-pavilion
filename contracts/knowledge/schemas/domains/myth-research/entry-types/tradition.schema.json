@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "传统条目契约",
+  "description": "tradition 类型叠加契约：可被引用的传统语境对象。",
+  "type": "object",
+  "properties": {
+    "attributes": {
+      "type": "object",
+      "properties": {
+        "scope": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "scope"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "attributes"
+  ]
+}

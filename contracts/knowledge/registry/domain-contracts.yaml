@@ -1,0 +1,12 @@
+# 域分层契约注册表：登记启用叠加契约的知识域及其专属条目类型。
+# 登记后该域的 common.schema.json 与所列条目类型的 entry-types/<type>.schema.json
+# 均为必需文件，缺失时按 SCHEMA_FILE_MISSING 失败（不允许静默撤销契约层）。
+# 未登记的条目类型（如 work、place、concept）继续复用公共条目契约。
+domain_contracts:
+  - domain: myth-research
+    entry_types:
+      - figure
+      - tradition
+      - episode
+      - motif
+      - claim

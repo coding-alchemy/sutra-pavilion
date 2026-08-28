@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "具体见证",
+  "description": "某来源记录中可精确定位的一段原文、铭文或图像见证；知识条目只能引用本对象（ADR-0004）。",
+  "type": "object",
+  "properties": {
+    "schema_version": { "const": 1 },
+    "id": { "$ref": "#/$defs/ulid" },
+    "title": { "type": "string", "minLength": 1 },
+    "source_record_id": { "$ref": "#/$defs/ulid" },
+    "language": { "$ref": "#/$defs/language" },
+    "locator": { "type": "string", "minLength": 1 },
+    "evidence_level": { "enum": ["direct", "indirect", "contextual"] },
+    "excerpt": { "type": "string", "minLength": 1 },
+    "working_translation": {
+      "type": "object",
+      "properties": {
+        "text": { "type": "string", "minLength": 1 },
+        "responsible_by": { "type": "string", "minLength": 1 }
+      },
+      "required": ["text", "responsible_by"],
+      "additionalProperties": false
+    },
+    "text_note": { "type": "string", "minLength": 1 },
+    "supports": { "$ref": "#/$defs/nonEmptyStringList" },
+    "does_not_support": { "$ref": "#/$defs/nonEmptyStringList" }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "title",
+    "source_record_id",
+    "language",
+    "locator",
+    "evidence_level",
+    "text_note",
+    "supports",
+    "does_not_support"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "ulid": { "type": "string", "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$" },
+    "language": { "type": "string", "pattern": "^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$" },
+    "nonEmptyStringList": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "神话研究域公共条目契约",
+  "description": "叠加于公共 entry.schema.json 之上的约束层：只声明必填、收紧与固定值，不重复公共字段形状（字段类型的真源在 entry.schema.json）。",
+  "type": "object",
+  "properties": {
+    "summary": {
+      "minLength": 1
+    },
+    "search_terms": {
+      "minItems": 1
+    },
+    "publish_license": {
+      "const": "private-use-only"
+    }
+  },
+  "required": [
+    "summary",
+    "aliases",
+    "search_terms",
+    "name_forms",
+    "verification_stage",
+    "controversy_status",
+    "publish_license"
+  ]
+}

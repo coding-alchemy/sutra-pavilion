@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "叙事版本条目契约",
+  "description": "episode 类型叠加契约：版本特定的叙事条目。",
+  "type": "object",
+  "properties": {
+    "attributes": {
+      "type": "object",
+      "properties": {
+        "version_note": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "version_note"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "attributes"
+  ]
+}

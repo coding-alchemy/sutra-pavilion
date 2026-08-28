@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "神话人物条目契约",
+  "description": "figure 类型叠加契约：实体子类型与时间属性。",
+  "type": "object",
+  "properties": {
+    "external_ids": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "attributes": {
+      "type": "object",
+      "properties": {
+        "entity_kind": {
+          "enum": [
+            "deity",
+            "hero",
+            "historical-person",
+            "ancestor",
+            "spirit",
+            "monster",
+            "group",
+            "place",
+            "object",
+            "concept"
+          ]
+        },
+        "date_label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "date_start": {
+          "type": "integer"
+        },
+        "date_end": {
+          "type": "integer"
+        },
+        "date_certainty": {
+          "enum": [
+            "exact",
+            "approximate",
+            "range",
+            "disputed",
+            "unknown"
+          ]
+        }
+      },
+      "required": [
+        "entity_kind",
+        "date_label",
+        "date_certainty"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "external_ids",
+    "attributes"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "attributes": {
+            "required": [
+              "date_start"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "attributes": {
+            "required": [
+              "date_end"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "attributes": {
+            "required": [
+              "date_end"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "attributes": {
+            "required": [
+              "date_start"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

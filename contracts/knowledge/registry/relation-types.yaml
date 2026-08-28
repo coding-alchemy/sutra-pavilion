@@ -1,9 +1,11 @@
 # 知识关系类型受控注册表。新增类型须经审核（见知识上下文术语表「关系类型」）。
 # 每个类型登记名称与适用对象，共同表达关系定义的方向：
-#   name         类型名称
-#   source_kinds 允许声明该关系的知识对象类型
-#   target_kinds 允许作为关系目标的知识对象类型
-# 取值：domain | library | entry；不适用的对象组合会被 RELATION_NOT_APPLICABLE 拒绝。
+#   name                类型名称
+#   source_kinds        允许声明该关系的知识对象类型（domain | library | entry）
+#   target_kinds        允许作为关系目标的知识对象类型
+#   source_entry_types  可选：source_kinds 含 entry 时，允许声明该关系的条目类型
+#   target_entry_types  可选：target_kinds 含 entry 时，允许作为目标的条目类型
+# 不适用的对象组合会被 RELATION_NOT_APPLICABLE / RELATION_ENTRY_TYPE_NOT_APPLICABLE 拒绝。
 relation_types:
   - name: recorded_in
     source_kinds: [domain, library, entry]
@@ -11,3 +13,21 @@ relation_types:
   - name: influenced
     source_kinds: [domain, library, entry]
     target_kinds: [domain, library, entry]
+  - name: within_tradition
+    source_kinds: [entry]
+    target_kinds: [entry]
+    source_entry_types: [figure, episode, motif, claim]
+    target_entry_types: [tradition]
+  - name: features
+    source_kinds: [entry]
+    target_kinds: [entry]
+    source_entry_types: [episode]
+    target_entry_types: [figure]
+  - name: instantiates_motif
+    source_kinds: [entry]
+    target_kinds: [entry]
+    source_entry_types: [episode]
+    target_entry_types: [motif]
+  - name: part_of
+    source_kinds: [entry]
+    target_kinds: [entry]

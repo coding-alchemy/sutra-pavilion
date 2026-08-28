@@ -165,6 +165,8 @@ def test_filled_knowledge_templates_produce_valid_objects(tmp_path):
             "<slug>": "nuwa",
             "<一至三句话摘要>": "中国神话中的创世与造人神祇。",
             "<条目类型>": "figure",
+            "<名称形式-id>": "nuwa-zh-hans",
+            "<名称使用语境>": "现代规范展示名",
             "<正文内容>": "示例正文。",
         }),
     )

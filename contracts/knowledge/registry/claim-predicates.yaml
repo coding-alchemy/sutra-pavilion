@@ -1,0 +1,10 @@
+# Claim 谓词受控注册表：解释性关系只能通过 claim 条目表达（ADR-0004、神话研究领域设计 6.6）。
+# translated_as 不是 Claim 谓词，名称翻译记录在 name_forms.translated_as 中。
+claim_predicates:
+  - identified_with
+  - syncretized_with
+  - developed_from
+  - influenced_by
+  - literary_adaptation_of
+  - counterpart_of
+  - possibly_related_to
