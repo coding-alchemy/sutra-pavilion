@@ -1,0 +1,39 @@
+# ===== 系统与编辑器 =====
+.DS_Store
+.idea/
+.vscode/
+
+# ===== Obsidian：仅共享知识库根目录的核心设置 app.json，其余个人/设备状态全部忽略 =====
+# 项目根目录不是知识库根目录，其本地编辑器状态不进入 Git
+/.obsidian/
+/.trash/
+sutra-pavilion/.obsidian/*
+!sutra-pavilion/.obsidian/app.json
+sutra-pavilion/.trash/
+
+# ===== 本地生成物 =====
+.generated/
+
+# ===== 本地大型媒体 =====
+.local/
+
+# ===== Python 工具链 =====
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# ===== 本地环境变量 =====
+.env
+.env.*
+!.env.example
